@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const _Usuario = require('./usuario');
+const _Nota = require('./nota');
 const database = {};
 
 const options = {
@@ -13,6 +14,14 @@ const options = {
 const sequelize = new Sequelize(options);
 
 let Usuario = _Usuario(sequelize, DataTypes);
+let Nota = _Nota(sequelize, DataTypes);
+
+database['Usuario'] = Usuario;
+database['Nota'] = Nota;
+
+for(const key in database) {
+  if(database[key].associate) database[key].associate(database)
+}
 
 Usuario.findAll();
 
