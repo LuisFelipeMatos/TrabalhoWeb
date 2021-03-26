@@ -1,32 +1,34 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const _Usuario = require('./usuario');
 const _Nota = require('./nota');
-const database = {};
+var _Tag = require('./tag');
+let options = require('../config/database');
+let { NODE_ENV } = process.env;
+var _Checklist = require('./checklist');
+let database = {};
 
-const options = {
-  username: 'postgres',
-  password: 'luis',
-  database: 'notas',
-  host: 'localhost',
-  dialect: 'postgres',
-};
+
+NODE_ENV =  NODE_ENV || 'production'
+options = options[NODE_ENV];
 
 const sequelize = new Sequelize(options);
 
-let Usuario = _Usuario(sequelize, DataTypes);
-let Nota = _Nota(sequelize, DataTypes);
 
-database['Usuario'] = Usuario;
-database['Nota'] = Nota;
-
-for(const key in database) {
-  if(database[key].associate) database[key].associate(database)
-}
-
-Usuario.findAll();
-
-sequelize.authenticate().then(() => console.log(`Conectado com sucesso ao banco ${options.database}`))
+sequelize.authenticate().then(() => console.log(`Conectado com sucesso ao banco ${options.database} no ambiente ${NODE_ENV}`))
   .catch((error) => console.log(`Falha ao conectar ao banco ${options.database}: ${error}`));
+
+const Checklist = _Checklist = (sequelize, DataTypes);
+const Nota = _Nota(sequelize, DataTypes);
+const Tag = _Tag(sequelize, DataTypes);
+const Usuario = _Usuario(sequelize, DataTypes);
+
+Checklist.belongsTo(Nota, { as: 'nota', foreignKey: 'notaId' });
+Nota.hasMany(Checklist, { as: 'checklists', foreignKey: 'notaId' });
+Nota.hasMany(Tag, { as: 'tags', foreignKey: 'notaId' });
+Nota.belongsTo(Usuario, { as: 'usuario', foreignKey: 'usuarioId' });
+Tag.belongsTo(Nota, { as: 'nota', foreignKey: 'notaId' });
+
+database = { Checklist, Nota, Tag, Usuario };
 
 database.sequelize = sequelize;
 

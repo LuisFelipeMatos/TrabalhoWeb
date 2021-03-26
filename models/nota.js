@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes){
     const Nota = sequelize.define(
    'Nota', 
@@ -28,7 +29,7 @@ module.exports = function(sequelize, DataTypes){
       criadoEm: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       atualizadoEm: {
         type: DataTypes.DATE,
@@ -43,11 +44,7 @@ module.exports = function(sequelize, DataTypes){
     }   
     );
     
-    Nota.associate = (models) =>{
-        this.belogsTo(models.Usuario, {
-         foreignKey: 'usuarioId',   
-        })
-    };
+
 
     
     
