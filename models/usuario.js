@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const { saltRounds } = require('../config/security');
-
 module.exports = function(sequelize, DataTypes) {
     const Usuario = sequelize.define(
       'usuario',
@@ -48,5 +47,6 @@ module.exports = function(sequelize, DataTypes) {
         },
       }
     );
+    return Usuario;
 };
  
