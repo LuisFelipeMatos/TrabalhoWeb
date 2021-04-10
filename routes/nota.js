@@ -1,21 +1,38 @@
 const { Router } = require('express');
 const router = Router();
 const controller = require('../controller/default');
+const controllerNota = require('../controller/nota');
 const { Nota } = require('../models');
+const controllerEditNota = require('../controller/nota')
 
-router.get('/:id?', async (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
-  const notas = id ? await controller.getById(Nota, id) : await controller.getAll(Nota);
+  const nota = await controllerNota.getById(id); 
 
-  res.send(notas || []);
+  res.send(nota);
+});
+
+router.get('/usuario/:usuarioId', async (req, res) => {
+
+const {usuarioId} = req.params;
+
+const nota = await controllerNota.getByUsuarioId(usuarioId);
+
+const{usuarioId} = req.params;
+const{tag} = req.query;
+
+const nota = await controllerNota.getByUsuarioId(usuarioId, tag);
+
+res.send(nota || []);
+
 });
 
 router.post('/', async (req, res) => {
   try {
     const { body } = req;
 
-    const nota = await controller.save(Nota, body);
+    const nota = await controllerNota.save(body);
 
     res.send(nota);
   } catch (error) {
@@ -28,7 +45,7 @@ router.put('/:id', async (req, res) => {
     const { body } = req;
     const { id } = req.params;
 
-    const nota = await controller.edit(Nota, body, id);
+    const nota = await controllerEditNota.edit(body);
 
     res.send(nota);
   } catch (error) {

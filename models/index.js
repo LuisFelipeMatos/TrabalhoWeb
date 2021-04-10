@@ -23,8 +23,8 @@ const Tag = _Tag(sequelize, DataTypes);
 const Usuario = _Usuario(sequelize, DataTypes);
 
 Checklist.belongsTo(Nota, { as: 'nota', foreignKey: 'notaId' });
-Nota.hasMany(Checklist, { as: 'checklist', foreignKey: 'notaId' });
-Nota.hasMany(Tag, { as: 'tag', foreignKey: 'notaId' });
+Nota.hasMany(Checklist, { as: 'checklists', foreignKey: 'notaId' });
+Nota.hasMany(Tag, { as: 'tags', foreignKey: 'notaId' });
 Nota.belongsTo(Usuario, { as: 'usuario', foreignKey: 'usuarioId' });
 Tag.belongsTo(Nota, { as: 'nota', foreignKey: 'notaId' });
 

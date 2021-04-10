@@ -26,6 +26,8 @@ controller.edit = async (model, objeto, id) => {
   }
 };
 
+
+
 controller.remove = async (model, id) => {
   try {
     return await model.destroy({ where: { id } });

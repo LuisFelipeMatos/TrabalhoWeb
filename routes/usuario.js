@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 const controller = require('../controller/default');
-const { Usuario } = require('../models');
+const { Usuario,Tag,Checklis } = require('../models');
 
 router.get('/:id?', async (req, res) => {
   const { id } = req.params;
